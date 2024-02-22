@@ -11,6 +11,7 @@ import {
 import { UploadOutlined } from "@ant-design/icons";
 import type { UploadProps } from "antd";
 import { useAddSportMutation } from "../../redux/features/sports/sports.api";
+import { useNavigate } from "react-router-dom";
 
 const formItemLayout = {
   labelCol: {
@@ -49,6 +50,8 @@ const AddForm: React.FC = () => {
     },
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (values: Record<string, unknown>) => {
     delete values.image;
     sport({ ...values, image: imageInput })
@@ -56,6 +59,7 @@ const AddForm: React.FC = () => {
       .then((res) => {
         if (res.success) {
           message.success("Sport added successfully");
+          navigate("/manage-sports");
         }
       })
       .catch(() => {

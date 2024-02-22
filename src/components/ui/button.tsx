@@ -8,7 +8,7 @@ import {
   Slider,
   Space,
 } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import { FilterOutlined, RedoOutlined } from "@ant-design/icons";
 import { TFilter } from "../../types/filter";
 
 const ButtonUI = ({
@@ -129,6 +129,11 @@ export const SellButtonUI = ({
     setOpen(false);
   };
 
+  const handleReset = () => {
+    setFiltering(undefined);
+    setQuery({});
+  }
+
   return (
     <div
       style={{
@@ -219,8 +224,17 @@ export const SellButtonUI = ({
         <Button
           style={{ marginTop: "20px" }}
           type="primary"
+          htmlType="submit"
           onClick={handleSubmit}>
           <FilterOutlined /> Filter
+        </Button>
+
+        <Button
+          style={{ marginTop: "20px", marginLeft: "10px" }}
+          type="primary"
+          onClick={handleReset}
+          htmlType="reset">
+          <RedoOutlined /> Reset
         </Button>
       </Drawer>
     </div>
