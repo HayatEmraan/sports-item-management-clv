@@ -6,6 +6,8 @@ import AddSports from "../pages/sports/addsports";
 import ManageSports from "../pages/sports/managesports";
 import ViewHistory from "../pages/sales/viewsales";
 import SellSports from "../pages/sales/sellsports";
+import CreateUser from "../pages/super/user/createuser";
+import UserOfHistory from "../pages/super/user/userofhistory";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
       {
         path: "/sales-history",
         element: <ViewHistory />,
+      },
+      {
+        path: "create-user",
+        element: <CreateUser />,
+      },
+      {
+        path: "user-of-history",
+        element: <UserOfHistory />,
       },
     ],
   },

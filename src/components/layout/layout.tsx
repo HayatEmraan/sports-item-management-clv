@@ -40,6 +40,20 @@ const items = [
       }
     ],
   },
+  {
+    key: "Users",
+    label: "Users Management",
+    children: [
+      {
+        key: "Create User",
+        label: <NavLink to={`/create-user`}>Create User</NavLink>,
+      },
+      {
+        key: "User of History",
+        label: <NavLink to={`/user-of-history`}>User of History</NavLink>,
+      }
+    ],
+  },
 ];
 
 const MainLayOut = () => {

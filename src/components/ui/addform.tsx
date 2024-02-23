@@ -112,7 +112,6 @@ const AddForm: React.FC = () => {
         <Select
           defaultValue="Medium"
           style={{ width: "100%" }}
-          // onChange={handleChange}
           options={[
             { value: "Small", label: "Small" },
             { value: "Medium", label: "Medium" },
