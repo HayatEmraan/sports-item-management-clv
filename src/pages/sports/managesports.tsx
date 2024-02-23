@@ -127,6 +127,18 @@ const ManageSports: React.FC = () => {
       ),
     },
     {
+      title: "Branch",
+      dataIndex: "branch",
+      key: "branch",
+      render: (branch) => (
+        <>
+          <Tag color={"purple"} key={branch}>
+            {branch?.toUpperCase()}
+          </Tag>
+        </>
+      ),
+    },
+    {
       title: "Action",
       key: "action",
       render: (sport) => {

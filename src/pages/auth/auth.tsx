@@ -4,7 +4,7 @@ import {
   ProConfigProvider,
   ProFormText,
 } from "@ant-design/pro-components";
-import { Tabs, message, theme } from "antd";
+import { Form, Select, Tabs, message, theme } from "antd";
 
 import { useState } from "react";
 import {
@@ -183,6 +183,18 @@ export const Auth = () => {
                   },
                 ]}
               />
+
+              <Form.Item
+                name="role"
+                initialValue="super"
+                rules={[{ required: true, message: "Please input!" }]}>
+                <Select
+                  disabled
+                  defaultValue="super"
+                  style={{ width: "100%" }}
+                  options={[{ value: "super", label: "Super Admin (Default)" }]}
+                />
+              </Form.Item>
               <ProFormText.Password
                 name="password"
                 fieldProps={{

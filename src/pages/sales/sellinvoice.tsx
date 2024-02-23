@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Segmented, Table, Tag } from "antd";
+import { Button, Segmented, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { useSaleStatsQuery } from "../../redux/features/sales/sales.api";
 
@@ -91,9 +91,19 @@ const columns: TableProps<DataType>["columns"] = [
       </>
     ),
   },
+  {
+    title: "Invoice",
+    dataIndex: "invoice",
+    key: "invoice",
+    render: () => (
+      <>
+        <Button type="dashed" htmlType="submit">Download</Button>
+      </>
+    ),
+  },
 ];
 
-const ViewHistory: React.FC = () => {
+const SellInvoice: React.FC = () => {
   const [filtering, setFiltering] = useState("");
   const { data: fetchData, isFetching } = useSaleStatsQuery(filtering);
 
@@ -147,4 +157,4 @@ const ViewHistory: React.FC = () => {
   );
 };
 
-export default ViewHistory;
+export default SellInvoice;

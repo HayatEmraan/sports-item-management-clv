@@ -17,5 +17,6 @@ module.exports = {
   },
   globals: {
     module: 'writable',
+    process: "writable",
   }
 }

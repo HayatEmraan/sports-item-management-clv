@@ -34,7 +34,7 @@ const UserOfHistory: React.FC = () => {
       render: (role) => (
         <>
           <Tag color={"geekblue"} key={role}>
-            {role.toUpperCase()}
+            {role?.toUpperCase()}
           </Tag>
         </>
       ),

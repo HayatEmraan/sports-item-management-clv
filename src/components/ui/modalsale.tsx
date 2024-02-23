@@ -31,7 +31,6 @@ const ModalSale = ({
   const [date, setDate] = useState("");
   const [sale] = useAddSaleMutation();
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
     setDate(dateString);
   };
 
@@ -47,6 +46,7 @@ const ModalSale = ({
         message.error("Something went wrong, please try again");
       });
   };
+
   return (
     <Form
       onFinish={(values) => {
@@ -76,6 +76,18 @@ const ModalSale = ({
         initialValue={sport?.name}
         name="sport">
         <Input disabled />
+      </Form.Item>
+
+      <Form.Item
+        label="Branch Name"
+        name="branch"
+        initialValue={sport?.branch as string}
+        rules={[{ required: true, message: "Please input!" }]}>
+        <Input
+          defaultValue={(sport?.branch as string)?.toUpperCase()}
+          disabled
+          style={{ width: "100%" }}
+        />
       </Form.Item>
 
       <Form.Item

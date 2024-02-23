@@ -1,17 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  message,
-  Upload,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd";
+import { Button, Form, Input, InputNumber, Select, message } from "antd";
+
 import { useAddSportMutation } from "../../redux/features/sports/sports.api";
 import { useNavigate } from "react-router-dom";
+import { uploadImg } from "../../utils/imgbb";
 
 const formItemLayout = {
   labelCol: {
@@ -26,35 +19,14 @@ const formItemLayout = {
 
 const AddForm: React.FC = () => {
   const [sport] = useAddSportMutation();
-
-  const [imageInput, setImageInput] = useState("");
-
-  const props: UploadProps = {
-    name: "file",
-    action: "https://run.mocky.io/v3/73365fa2-441d-4c32-866b-b0103cceb07d",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-        setImageInput("image " + info.file.name);
-      } else if (info.file.status === "error") {
-        message.error(
-          `${info.file.name} file upload failed. Please upload JPG/JPEG file only`
-        );
-      }
-    },
-  };
-
+  const [inputFile, setInputFile] = useState<any>({});
   const navigate = useNavigate();
-
-  const handleSubmit = (values: Record<string, unknown>) => {
+  
+  const handleSubmit = async (values: Record<string, unknown>) => {
     delete values.image;
-    sport({ ...values, image: imageInput })
+    const upload = await uploadImg(inputFile);
+
+    sport({ ...values, image: upload })
       .unwrap()
       .then((res) => {
         if (res.success) {
@@ -66,6 +38,7 @@ const AddForm: React.FC = () => {
         message.error("Something went wrong, please try again");
       });
   };
+
   return (
     <Form
       onFinish={(values) => {
@@ -99,9 +72,10 @@ const AddForm: React.FC = () => {
         label="Image (JPG/JPEG)"
         name="image"
         rules={[{ required: true, message: "Please input!" }]}>
-        <Upload {...props}>
-          <Button icon={<UploadOutlined />}>Click to Upload (JPG/JPEG)</Button>
-        </Upload>
+        <Input
+          onChange={(e) => setInputFile(e.target.files?.[0])}
+          type="file"
+        />
       </Form.Item>
 
       <Form.Item
@@ -209,6 +183,23 @@ const AddForm: React.FC = () => {
           options={[
             { value: "New", label: "New" },
             { value: "Used", label: "Used" },
+          ]}
+        />
+      </Form.Item>
+
+      <Form.Item
+        name="branch"
+        label="Branch of Sport"
+        initialValue="rangpur"
+        rules={[{ required: true, message: "Please input!" }]}>
+        <Select
+          defaultValue="rangpur"
+          style={{ width: "100%" }}
+          options={[
+            { value: "rangpur", label: "Rangpur Branch" },
+            { value: "dhaka", label: "Dhaka Branch" },
+            { value: "rajshahi", label: "Rajshahi Branch" },
+            { value: "cumilla", label: "Cumilla Branch" },
           ]}
         />
       </Form.Item>

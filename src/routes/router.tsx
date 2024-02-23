@@ -8,6 +8,7 @@ import ViewHistory from "../pages/sales/viewsales";
 import SellSports from "../pages/sales/sellsports";
 import CreateUser from "../pages/super/user/createuser";
 import UserOfHistory from "../pages/super/user/userofhistory";
+import SellInvoice from "../pages/sales/sellinvoice";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
       {
         path: "user-of-history",
         element: <UserOfHistory />,
+      },
+      {
+        path: "sell-invoices",
+        element: <SellInvoice />,
       },
     ],
   },
