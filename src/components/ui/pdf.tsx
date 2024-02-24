@@ -1,20 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Document,
-  Page,
-  StyleSheet,
-  View,
-  Text,
-  PDFViewer,
-} from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, View, Text } from "@react-pdf/renderer";
 import moment from "moment";
 import { ToWords } from "to-words";
 
 interface TRecord {
-  [key: string]: any;
+  record: Record<string, any>;
 }
 
-export const PDF: React.FC = ({ record }: TRecord) => {
+export const PDF = ({ record }: TRecord) => {
   const subtotal = 0;
   const amount = record?.quantity * record?.price;
   const formattedDate = moment(record?.createdAt).format("MMMM DD, YYYY");
@@ -37,118 +30,107 @@ export const PDF: React.FC = ({ record }: TRecord) => {
     "Payment to be made, in accordance with the above specifications, in the sum of:";
 
   return (
-    <PDFViewer style={styles.viewer}>
-      <Document>
-        <Page style={styles.page} size="A4">
-          <View>
-            <View style={styles.invoiceTextNumberContainer}>
-              <View>
-                <Text style={styles.h1}>H & T Sports, Inc.</Text>
-                <Text>1911 N Sayre Ave</Text>
-                <Text>Chicago, IL 60707</Text>
-                <Text>(773) 889-9133</Text>
-                <Text>hayat@gmail.com</Text>
-              </View>
-              <View>
-                <Text style={styles.h2}>{"Invoice"}</Text>
-                <Text>{formattedDate}</Text>
-              </View>
+    <Document>
+      <Page style={styles.page} size="A4">
+        <View>
+          <View style={styles.invoiceTextNumberContainer}>
+            <View>
+              <Text style={styles.h1}>H & T Sports, Inc.</Text>
+              <Text>1911 N Sayre Ave</Text>
+              <Text>Chicago, IL 60707</Text>
+              <Text>(773) 889-9133</Text>
+              <Text>hayat@gmail.com</Text>
+            </View>
+            <View>
+              <Text style={styles.h2}>{"Invoice"}</Text>
+              <Text>{formattedDate}</Text>
             </View>
           </View>
-          <View style={styles.dividerLG} />
+        </View>
+        <View style={styles.dividerLG} />
 
-          <View>
-            <View style={styles.invoiceTextNumberContainer}>
-              <View>
-                <Text>Customer: {record?.name}</Text>
-                <Text>Seller: {record?.sellerId?.name}</Text>
-                <Text>Branch: {(record?.branch as string)?.toUpperCase()}</Text>
-                <Text>Email: {record?.sellerId?.email}</Text>
-              </View>
+        <View>
+          <View style={styles.invoiceTextNumberContainer}>
+            <View>
+              <Text>Customer: {record?.name}</Text>
+              <Text>Seller: {record?.sellerId?.name}</Text>
+              <Text>Branch: {(record?.branch as string)?.toUpperCase()}</Text>
+              <Text>Email: {record?.sellerId?.email}</Text>
             </View>
           </View>
+        </View>
 
-          <View style={styles.table}>
-            <View style={styles.tableHeader}>
-              <Text style={[styles.tableHeaderItem, { width: "10%" }]}>SL</Text>
-              <Text style={[styles.tableHeaderItem, { width: "50%" }]}>
-                ITEM
-              </Text>
-              <Text style={[styles.tableHeaderItem, { width: "10%" }]}>
-                QTY
-              </Text>
-              <Text style={[styles.tableHeaderItem, { width: "15%" }]}>
-                PRICE
-              </Text>
-              <Text style={[styles.tableHeaderItem, { width: "15%" }]}>
-                TOTAL
-              </Text>
-            </View>
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableCol, { width: "10%" }]}>1</Text>
-              <Text style={[styles.tableCol, { width: "50%" }]}>
-                {record?.sportId?.name}
-              </Text>
-              <Text style={[styles.tableCol, { width: "10%" }]}>
-                {record?.quantity}
-              </Text>
-              <Text style={[styles.tableCol, { width: "15%" }]}>
-                {record?.price}
-              </Text>
-              <Text style={[styles.tableCol, { width: "15%" }]}>{amount}</Text>
-            </View>
+        <View style={styles.table}>
+          <View style={styles.tableHeader}>
+            <Text style={[styles.tableHeaderItem, { width: "10%" }]}>SL</Text>
+            <Text style={[styles.tableHeaderItem, { width: "50%" }]}>ITEM</Text>
+            <Text style={[styles.tableHeaderItem, { width: "10%" }]}>QTY</Text>
+            <Text style={[styles.tableHeaderItem, { width: "15%" }]}>
+              PRICE
+            </Text>
+            <Text style={[styles.tableHeaderItem, { width: "15%" }]}>
+              TOTAL
+            </Text>
           </View>
-
-          <View style={styles.signatureTotalContainer}>
-            <View style={styles.signatureContainer}>
-              <Text style={styles.signatureText}>
-                Signature: ________________
-              </Text>
-              <Text style={styles.signatureText}>
-                Date: {record?.date?.toString()}
-              </Text>
-            </View>
-
-            <View style={styles.totalContainer}>
-              <Text style={styles.totalText}>SUBTOTAL: {subtotal}</Text>
-              <Text style={styles.totalText}>
-                Discount(%): {record?.discount}
-              </Text>
-              <Text style={styles.totalText}>Tax(%): {record?.tax}</Text>
-            </View>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableCol, { width: "10%" }]}>1</Text>
+            <Text style={[styles.tableCol, { width: "50%" }]}>
+              {record?.sportId?.name}
+            </Text>
+            <Text style={[styles.tableCol, { width: "10%" }]}>
+              {record?.quantity}
+            </Text>
+            <Text style={[styles.tableCol, { width: "15%" }]}>
+              {record?.price}
+            </Text>
+            <Text style={[styles.tableCol, { width: "15%" }]}>{amount}</Text>
           </View>
+        </View>
 
-          <View style={styles.amountContainer}>
-            <Text>{text}</Text>
-            <View style={styles.amount}>
-              <Text>
-                {amountInWords} ({currency})
-              </Text>
-            </View>
-            <Text style={styles.signature}>
-              Authorized Signature:
-              _______________________________________________________________________________
+        <View style={styles.signatureTotalContainer}>
+          <View style={styles.signatureContainer}>
+            <Text style={styles.signatureText}>
+              Signature: ________________
+            </Text>
+            <Text style={styles.signatureText}>
+              Date: {record?.date?.toString()}
             </Text>
           </View>
 
-          <View style={styles.container}>
-            <Text style={styles.left}>H & T Sports, Inc.</Text>
-            <Text style={styles.right}>
-              {`Seal Coating  ·  Striping  ·  Blacktop Paving and Repairs  ·  Insured and Bonded`}
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>SUBTOTAL: {subtotal}</Text>
+            <Text style={styles.totalText}>
+              Discount(%): {record?.discount}
+            </Text>
+            <Text style={styles.totalText}>Tax(%): {record?.tax}</Text>
+          </View>
+        </View>
+
+        <View style={styles.amountContainer}>
+          <Text>{text}</Text>
+          <View style={styles.amount}>
+            <Text>
+              {amountInWords} ({currency})
             </Text>
           </View>
-        </Page>
-      </Document>
-    </PDFViewer>
+          <Text style={styles.signature}>
+            Authorized Signature:
+            _______________________________________________________________________________
+          </Text>
+        </View>
+
+        <View style={styles.container}>
+          <Text style={styles.left}>H & T Sports, Inc.</Text>
+          <Text style={styles.right}>
+            {`Seal Coating  ·  Striping  ·  Blacktop Paving and Repairs  ·  Insured and Bonded`}
+          </Text>
+        </View>
+      </Page>
+    </Document>
   );
 };
 
 const styles = StyleSheet.create({
-  viewer: {
-    width: "100%",
-    height: "100vh",
-    border: "none",
-  },
   h1: {
     fontSize: 20,
     fontWeight: 600,

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Button, Modal, Segmented, Table, Tag } from "antd";
+import { Button, Segmented, Table, Tag } from "antd";
 import type { TableProps } from "antd";
 import { useSaleStatsQuery } from "../../redux/features/sales/sales.api";
+import { pdf } from "@react-pdf/renderer";
 import { PDF } from "../../components/ui/pdf";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
 
 interface DataType {
   key: string;
@@ -36,6 +37,12 @@ const SellInvoice: React.FC = () => {
         setFiltering("year");
         break;
     }
+  };
+
+  const downloadPdf = async (item: any) => {
+    const fileName = `${item?.sellerId?.name}_${item?._id}.pdf`;
+    const blob = await pdf(<PDF record={item} />).toBlob();
+    saveAs(blob, fileName);
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -122,20 +129,12 @@ const SellInvoice: React.FC = () => {
       key: "invoice",
       render: (item) => (
         <>
-          {/* <Button type="dashed" htmlType="submit">
+          <Button
+            onClick={() => downloadPdf(item)}
+            type="dashed"
+            htmlType="submit">
             Download
-          </Button> */}
-
-          {/* <PDFDownloadLink
-            document={<PDF record={item} />}
-            fileName={`${item?.sellerId?.name}_Invoice_${item?._id}`}>
-            {({ blob, url, loading, error }) => {
-              console.log(blob, url, loading, error);
-              return loading ? "Loading document..." : "Download now!";
-            }}
-          </PDFDownloadLink> */}
-
-          {/* <PDF record={item} /> */}
+          </Button>
         </>
       ),
     },
