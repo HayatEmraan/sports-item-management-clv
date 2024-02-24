@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Document,
   Page,
@@ -6,16 +7,18 @@ import {
   Text,
   PDFViewer,
 } from "@react-pdf/renderer";
+import moment from "moment";
 import { ToWords } from "to-words";
 
-type PdfProps = {
-  record: IInvoice | undefined;
-};
+interface TRecord {
+  [key: string]: any;
+}
 
-export const PDF: React.FC<PdfProps> = ({ record, amount }) => {
+export const PDF: React.FC = ({ record }: TRecord) => {
   const subtotal = 0;
+  const amount = record?.quantity * record?.price;
+  const formattedDate = moment(record?.createdAt).format("MMMM DD, YYYY");
 
-  const formattedDate = new Date().getFullYear();
   const amountInWords = new ToWords({
     localeCode: "en-US",
     converterOptions: {
@@ -57,10 +60,10 @@ export const PDF: React.FC<PdfProps> = ({ record, amount }) => {
           <View>
             <View style={styles.invoiceTextNumberContainer}>
               <View>
-                <Text>Customer: </Text>
-                <Text>Seller: </Text>
-                <Text>Branch: </Text>
-                <Text>Email:</Text>
+                <Text>Customer: {record?.name}</Text>
+                <Text>Seller: {record?.sellerId?.name}</Text>
+                <Text>Branch: {(record?.branch as string)?.toUpperCase()}</Text>
+                <Text>Email: {record?.sellerId?.email}</Text>
               </View>
             </View>
           </View>
@@ -81,27 +84,19 @@ export const PDF: React.FC<PdfProps> = ({ record, amount }) => {
                 TOTAL
               </Text>
             </View>
-            {record?.missions?.map((item) => {
-              return (
-                <View key={item.id} style={styles.tableRow}>
-                  <Text style={[styles.tableCol, { width: "10%" }]}>
-                    {item.mission}
-                  </Text>
-                  <Text style={[styles.tableCol, { width: "50%" }]}>
-                    {item?.day}
-                  </Text>
-                  <Text style={[styles.tableCol, { width: "10%" }]}>
-                    {item?.daily_rate}
-                  </Text>
-                  <Text style={[styles.tableCol, { width: "15%" }]}>
-                    {item?.daily_rate * item?.day}
-                  </Text>
-                  <Text style={[styles.tableCol, { width: "15%" }]}>
-                    {item?.daily_rate * item?.day}
-                  </Text>
-                </View>
-              );
-            })}
+            <View style={styles.tableRow}>
+              <Text style={[styles.tableCol, { width: "10%" }]}>1</Text>
+              <Text style={[styles.tableCol, { width: "50%" }]}>
+                {record?.sportId?.name}
+              </Text>
+              <Text style={[styles.tableCol, { width: "10%" }]}>
+                {record?.quantity}
+              </Text>
+              <Text style={[styles.tableCol, { width: "15%" }]}>
+                {record?.price}
+              </Text>
+              <Text style={[styles.tableCol, { width: "15%" }]}>{amount}</Text>
+            </View>
           </View>
 
           <View style={styles.signatureTotalContainer}>
@@ -230,6 +225,7 @@ const styles = StyleSheet.create({
   tableRow: {
     display: "flex",
     flexDirection: "row",
+    textAlign: "center",
   },
   tableCol: {
     paddingVertical: 8,

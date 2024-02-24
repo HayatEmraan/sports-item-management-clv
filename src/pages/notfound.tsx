@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Result } from "antd";
-import { PDF } from "../components/ui/pdf";
+
 
 const NotFound: React.FC = () => (
   <>
-    {/* <div
+    <div
       style={{
         display: "flex",
         justifyContent: "center",
@@ -21,9 +21,7 @@ const NotFound: React.FC = () => (
           </Button>
         }
       />
-    </div> */}
-
-    <PDF record={{}} />
+    </div>
   </>
 );
 

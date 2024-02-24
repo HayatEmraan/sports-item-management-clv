@@ -79,9 +79,21 @@ const ModalSale = ({
       </Form.Item>
 
       <Form.Item
+        label="Price (USD)"
+        name="price"
+        initialValue={sport?.price as string}
+        rules={[{ required: true, message: "Please input!" }]}>
+        <Input
+          defaultValue={sport?.price as number}
+          disabled
+          style={{ width: "100%" }}
+        />
+      </Form.Item>
+
+      <Form.Item
         label="Branch Name"
         name="branch"
-        initialValue={sport?.branch as string}
+        initialValue={(sport?.branch as string)?.toUpperCase()}
         rules={[{ required: true, message: "Please input!" }]}>
         <Input
           defaultValue={(sport?.branch as string)?.toUpperCase()}
