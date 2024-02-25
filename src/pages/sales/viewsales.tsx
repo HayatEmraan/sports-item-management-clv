@@ -9,6 +9,8 @@ import {
 import { pdf } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import { ReportPDF } from "../../components/ui/reportpdf";
+import { useAppSelector } from "../../redux/hooks";
+import { ROLE } from "../../constants/role";
 
 interface DataType {
   key: string;
@@ -102,7 +104,7 @@ const columns: TableProps<DataType>["columns"] = [
 const ViewHistory: React.FC = () => {
   const [filtering, setFiltering] = useState("");
   const { data: fetchData, isFetching } = useSaleStatsQuery(filtering);
-
+  const role = useAppSelector((state) => state.auth.user?.role);
   const { data: salesReport } = useSalesReportQuery(filtering);
   const [condition, setCondition] = useState("Weekly");
 
@@ -143,15 +145,17 @@ const ViewHistory: React.FC = () => {
         }}>
         <h3>Sales History by {condition}</h3>
         <div>
-          <Button
-            type="default"
-            style={{
-              backgroundImage: "linear-gradient(30deg, #DC02C3, #5C53FE)",
-              color: "white",
-            }}
-            onClick={() => downloadPdf()}>
-            Download Report
-          </Button>
+          {role !== ROLE.seller && (
+            <Button
+              type="default"
+              style={{
+                backgroundImage: "linear-gradient(30deg, #DC02C3, #5C53FE)",
+                color: "white",
+              }}
+              onClick={() => downloadPdf()}>
+              Download Report
+            </Button>
+          )}
           <Segmented
             onChange={(e: any) => {
               handleFiltering(e);

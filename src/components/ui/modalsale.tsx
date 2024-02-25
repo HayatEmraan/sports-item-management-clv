@@ -31,6 +31,7 @@ const ModalSale = ({
   const [date, setDate] = useState("");
   const [sale] = useAddSaleMutation();
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    console.log(date);
     setDate(dateString);
   };
 

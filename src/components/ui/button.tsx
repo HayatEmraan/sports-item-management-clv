@@ -10,6 +10,8 @@ import {
 } from "antd";
 import { FilterOutlined, RedoOutlined } from "@ant-design/icons";
 import { TFilter } from "../../types/filter";
+import { useAppSelector } from "../../redux/hooks";
+import { ROLE } from "../../constants/role";
 
 const ButtonUI = ({
   deleteSportID,
@@ -66,6 +68,8 @@ export const SellButtonUI = ({
   setFiltering: React.Dispatch<React.SetStateAction<TFilter | undefined>>;
 }) => {
   const [open, setOpen] = useState(false);
+
+  const role = useAppSelector((state) => state.auth.user?.role);
 
   const [priceRange, setPriceRange] = useState<TPriceRange>({
     min: 10,
@@ -132,7 +136,7 @@ export const SellButtonUI = ({
   const handleReset = () => {
     setFiltering(undefined);
     setQuery({});
-  }
+  };
 
   return (
     <div
@@ -143,9 +147,11 @@ export const SellButtonUI = ({
         padding: "5px",
         borderRadius: "10px",
       }}>
-      <Button href="/add-sports" type="primary">
-        Add Sport
-      </Button>
+      {role !== ROLE.seller && (
+        <Button href="/add-sports" type="primary">
+          Add Sport
+        </Button>
+      )}
       <Button type="primary" onClick={showDrawer}>
         <FilterOutlined /> Filter
       </Button>
