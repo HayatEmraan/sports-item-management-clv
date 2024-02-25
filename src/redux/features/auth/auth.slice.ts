@@ -10,6 +10,7 @@ type TUser = {
   name: string;
   email: string;
   role: string;
+  branch: string;
   iat: number;
   exp: number;
 };

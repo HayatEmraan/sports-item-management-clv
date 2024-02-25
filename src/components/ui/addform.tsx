@@ -5,6 +5,7 @@ import { Button, Form, Input, InputNumber, Select, message } from "antd";
 import { useAddSportMutation } from "../../redux/features/sports/sports.api";
 import { useNavigate } from "react-router-dom";
 import { uploadImg } from "../../utils/imgbb";
+import { useAppSelector } from "../../redux/hooks";
 
 const formItemLayout = {
   labelCol: {
@@ -21,7 +22,9 @@ const AddForm: React.FC = () => {
   const [sport] = useAddSportMutation();
   const [inputFile, setInputFile] = useState<any>({});
   const navigate = useNavigate();
-  
+
+  const userBranch = useAppSelector((state) => state.auth.user?.branch);
+
   const handleSubmit = async (values: Record<string, unknown>) => {
     delete values.image;
     const upload = await uploadImg(inputFile);
@@ -190,10 +193,11 @@ const AddForm: React.FC = () => {
       <Form.Item
         name="branch"
         label="Branch of Sport"
-        initialValue="rangpur"
+        initialValue={userBranch || "rangpur"}
         rules={[{ required: true, message: "Please input!" }]}>
         <Select
-          defaultValue="rangpur"
+          defaultValue={userBranch || "rangpur"}
+          disabled={userBranch ? true : false}
           style={{ width: "100%" }}
           options={[
             { value: "rangpur", label: "Rangpur Branch" },
