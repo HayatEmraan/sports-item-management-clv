@@ -1,8 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { Segmented, Table, Tag } from "antd";
+import { Button, Segmented, Table, Tag } from "antd";
 import type { TableProps } from "antd";
-import { useSaleStatsQuery } from "../../redux/features/sales/sales.api";
+import {
+  useSaleStatsQuery,
+  useSalesReportQuery,
+} from "../../redux/features/sales/sales.api";
+import { pdf } from "@react-pdf/renderer";
+import { saveAs } from "file-saver";
+import { ReportPDF } from "../../components/ui/reportpdf";
 
 interface DataType {
   key: string;
@@ -97,6 +103,7 @@ const ViewHistory: React.FC = () => {
   const [filtering, setFiltering] = useState("");
   const { data: fetchData, isFetching } = useSaleStatsQuery(filtering);
 
+  const { data: salesReport } = useSalesReportQuery(filtering);
   const [condition, setCondition] = useState("Weekly");
 
   const handleFiltering = (e: string) => {
@@ -106,7 +113,7 @@ const ViewHistory: React.FC = () => {
         setFiltering("day");
         break;
       case "Weekly":
-        setFiltering("week");
+        setFiltering("isoWeek");
         break;
       case "Monthly":
         setFiltering("month");
@@ -115,6 +122,12 @@ const ViewHistory: React.FC = () => {
         setFiltering("year");
         break;
     }
+  };
+
+  const downloadPdf = async () => {
+    const fileName = `${condition}_report.pdf`;
+    const blob = await pdf(<ReportPDF record={salesReport?.data} />).toBlob();
+    saveAs(blob, fileName);
   };
 
   return (
@@ -129,13 +142,24 @@ const ViewHistory: React.FC = () => {
           borderRadius: "10px",
         }}>
         <h3>Sales History by {condition}</h3>
-        <Segmented
-          onChange={(e: any) => {
-            handleFiltering(e);
-          }}
-          value={condition}
-          options={["Daily", "Weekly", "Monthly", "Yearly"]}
-        />
+        <div>
+          <Button
+            type="default"
+            style={{
+              backgroundImage: "linear-gradient(30deg, #DC02C3, #5C53FE)",
+              color: "white",
+            }}
+            onClick={() => downloadPdf()}>
+            Download Report
+          </Button>
+          <Segmented
+            onChange={(e: any) => {
+              handleFiltering(e);
+            }}
+            value={condition}
+            options={["Daily", "Weekly", "Monthly", "Yearly"]}
+          />
+        </div>
       </div>
       <Table
         columns={columns}

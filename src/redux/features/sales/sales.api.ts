@@ -24,7 +24,20 @@ const salesApi = baseApi.injectEndpoints({
       },
       providesTags: ["sales"],
     }),
+    salesReport: builder.query({
+      query: (query) => {
+        const searchQuery = new URLSearchParams();
+        if (query) {
+          searchQuery.append("report", query);
+        }
+        return {
+          url: `/sales/report`,
+          method: "GET",
+          params: searchQuery,
+        };
+      }
+    })
   }),
 });
 
-export const { useAddSaleMutation, useSaleStatsQuery } = salesApi;
+export const { useAddSaleMutation, useSaleStatsQuery, useSalesReportQuery } = salesApi;

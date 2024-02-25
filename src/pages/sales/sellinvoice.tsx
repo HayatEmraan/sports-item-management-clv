@@ -28,7 +28,7 @@ const SellInvoice: React.FC = () => {
         setFiltering("day");
         break;
       case "Weekly":
-        setFiltering("week");
+        setFiltering("isoWeek");
         break;
       case "Monthly":
         setFiltering("month");
@@ -40,7 +40,7 @@ const SellInvoice: React.FC = () => {
   };
 
   const downloadPdf = async (item: any) => {
-    const fileName = `${item?.sellerId?.name}_${item?._id}.pdf`;
+    const fileName = `${item?.name}_${item?._id}.pdf`;
     const blob = await pdf(<PDF record={item} />).toBlob();
     saveAs(blob, fileName);
   };
